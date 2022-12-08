@@ -17,10 +17,10 @@ import java.util.ArrayList;
 public class horoscopeAdapter extends RecyclerView.Adapter<horoscopeAdapter.MyViewHolder> {
 
         private ArrayList<Person> allPeople;
-        private Context context;
+        private FirstFragment context;
         //private FragmentManager fragmentManager;
 
-        public horoscopeAdapter(Context c, ArrayList<Person>n)
+        public horoscopeAdapter(FirstFragment c, ArrayList<Person>n)
         {
             context = c;
             allPeople = n;
@@ -33,16 +33,14 @@ public class horoscopeAdapter extends RecyclerView.Adapter<horoscopeAdapter.MyVi
 
             // Create a new view, which defines the UI of the list item
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.layout_person_row, parent, false);
+                    .inflate(R.layout.fragment_layout_person, parent, false);
 
+            System.out.println(allPeople.size());
             System.out.println("DONE CREATING A SINGLE ROWS VIEW");
             return new MyViewHolder(view);
         }
 
-        @Override
-        public int getItemCount() {
-            return allPeople.size();
-        }
+
 
         //BINDS data to an empty row view
         //Position is the index in the list you want to show
@@ -55,7 +53,12 @@ public class horoscopeAdapter extends RecyclerView.Adapter<horoscopeAdapter.MyVi
             //System.out.println("DONE CREATING POPULATING A ROW: " + position + " " + p.getTitleNote());
         }
 
-        class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    @Override
+    public int getItemCount() {
+        return 0;
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
         {
 
             private TextView tvPerson;

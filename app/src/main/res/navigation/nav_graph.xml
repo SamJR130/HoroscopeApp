@@ -11,12 +11,19 @@
         android:label="fragment_first"
         tools:layout="@layout/fragment_first" >
         <action
-            android:id="@+id/action_firstFragment_to_mainActivity"
-            app:destination="@id/mainActivity" />
+            android:id="@+id/action_firstFragment_to_layoutPersonFragment"
+            app:destination="@id/layoutPersonFragment" />
     </fragment>
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.hfad.horoscopeapp.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/layoutPersonFragment"
+        android:name="com.hfad.horoscopeapp.LayoutPersonFragment"
+        android:label="fragment_layout_person"
+        tools:layout="@layout/fragment_layout_person" >
+        <argument
+            android:name="firstName"
+            app:argType="string" />
+        <argument
+            android:name="firstBirthday"
+            app:argType="string" />
+    </fragment>
 </navigation>
