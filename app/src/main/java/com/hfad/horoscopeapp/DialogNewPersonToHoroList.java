@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class DialogNewPerson extends DialogFragment {
+public class DialogNewPersonToHoroList extends DialogFragment {
 
     @NonNull
     @Override

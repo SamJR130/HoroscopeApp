@@ -3,17 +3,37 @@ package com.hfad.horoscopeapp;
 import java.util.ArrayList;
 
 public class Database {
-    private static ArrayList<Person> allPeople;
 
-    public static ArrayList<Person> getAllPeople()
+    private static ArrayList<PersonInfo> allPeople;
+
+    public static ArrayList<PersonInfo> getAllPeople()
     {
+        if (allPeople == null)
+        {
+            loadPersons();
+        }
 
         return allPeople;
     }
 
-    public static void addPerson(String birthday, String name, boolean main)
+    private static void loadPersons()
     {
-        allPeople.add(new Person(birthday, name, main));
+        allPeople = new ArrayList<PersonInfo>();
+        allPeople.add(new PersonInfo("11/17/1999", "Angel Negron", true));
+        allPeople.add(new PersonInfo("11/17/1999", "Angel Negron2", true));
+        allPeople.add(new PersonInfo("11/17/1999", "Angel Negron3", true));
+        allPeople.add(new PersonInfo("11/17/1999", "Angel Negron4", true));
     }
+
+    public static void addPerson(String name,String bday,boolean test)
+    {
+
+        if (getAllPeople() == null)
+        {
+            loadPersons();
+        }
+        allPeople.add(new PersonInfo(bday, name, test));
+    }
+
 
 }

@@ -1,11 +1,14 @@
 package com.hfad.horoscopeapp;
 
-public class Person {
+public class PersonInfo {
     private String birthday;
+
+
+
     private String name;
     private boolean isAppOwner;
 
-    public Person(String birthday, String name, boolean isAppOwner) {
+    public PersonInfo(String birthday, String name, boolean isAppOwner) {
         this.birthday = birthday;
         this.name = name;
         this.isAppOwner = isAppOwner;
@@ -33,5 +36,15 @@ public class Person {
 
     public void setAppOwner(boolean appOwner) {
         isAppOwner = appOwner;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "birthday='" + birthday + '\'' +
+                ", name='" + name + '\'' +
+                ", isAppOwner=" + isAppOwner +
+                '}';
     }
 }

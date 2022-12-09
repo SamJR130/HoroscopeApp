@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class horoscopeAdapter extends RecyclerView.Adapter<horoscopeAdapter.MyViewHolder> {
+public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyViewHolder> {
 
-        private ArrayList<Person> allPeople;
-        private FirstFragment context;
+        private ArrayList<PersonInfo> allPeople;
+        private Context context;
         //private FragmentManager fragmentManager;
 
-        public horoscopeAdapter(FirstFragment c, ArrayList<Person>n)
+        public HoroscopeAdapter(Context c, ArrayList<PersonInfo>n)
         {
             context = c;
             allPeople = n;
@@ -30,13 +30,9 @@ public class horoscopeAdapter extends RecyclerView.Adapter<horoscopeAdapter.MyVi
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
             // Create a new view, which defines the UI of the list item
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.fragment_layout_person, parent, false);
-
-            System.out.println(allPeople.size());
-            System.out.println("DONE CREATING A SINGLE ROWS VIEW");
+                    .inflate(R.layout.layout_person_row, parent, false);
             return new MyViewHolder(view);
         }
 
@@ -47,7 +43,7 @@ public class horoscopeAdapter extends RecyclerView.Adapter<horoscopeAdapter.MyVi
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-            Person p = allPeople.get(position);
+            PersonInfo p = allPeople.get(position);
             holder.setData(p, position);
 
             //System.out.println("DONE CREATING POPULATING A ROW: " + position + " " + p.getTitleNote());
@@ -55,7 +51,7 @@ public class horoscopeAdapter extends RecyclerView.Adapter<horoscopeAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return 0;
+        return allPeople.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
@@ -66,7 +62,7 @@ public class horoscopeAdapter extends RecyclerView.Adapter<horoscopeAdapter.MyVi
             private ImageView imvDelete;
 
             private int currentPositionInList = -1;
-            private Person currentPerson = null;
+            private PersonInfo currentPerson = null;
 
             public MyViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -88,7 +84,7 @@ public class horoscopeAdapter extends RecyclerView.Adapter<horoscopeAdapter.MyVi
                 itemView.setOnClickListener(this);
             }
 
-            public void setData(Person p, int pos)
+            public void setData(PersonInfo p, int pos)
             {
                 tvPerson.setText(p.getName());
                 tvBirthday.setText(p.getBirthday());
@@ -101,7 +97,7 @@ public class horoscopeAdapter extends RecyclerView.Adapter<horoscopeAdapter.MyVi
             public void onClick(View view) {
                 //DialogueShowNote dialog = new DialogueShowNote(currentNote);
                 //dialog.show(fragmentManager, "");
-                DialogNewPerson dialog = new DialogNewPerson();
+                DialogNewPersonToHoroList dialog = new DialogNewPersonToHoroList();
                 //FragmentActivity fa = (FragmentActivity) context;
                 FragmentActivity fa = (FragmentActivity) view.getContext();
                 FragmentManager fm = fa.getSupportFragmentManager();
