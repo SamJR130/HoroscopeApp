@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/layoutPersonFragment"
-        android:name="com.hfad.horoscopeapp.LayoutPersonFragment"
+        android:name="com.hfad.horoscopeapp.DisplayHoroscopeSign"
         android:label="fragment_layout_person"
         tools:layout="@layout/fragment_layout_person" >
         <argument
