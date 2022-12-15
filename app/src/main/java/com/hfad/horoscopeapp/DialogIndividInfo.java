@@ -43,6 +43,7 @@ public class DialogIndividInfo extends DialogFragment {
         sign = dialogView.findViewById(R.id.iv_sign_dialogue);
         tvName.setText(pi.getName());
         birthday.setText(getFormattedDate(pi.getBirthday()));
+        description.setText(horoAdapter.description);
         builder.setView(dialogView);
         //set image
         long bday = pi.getBirthday();
@@ -51,23 +52,20 @@ public class DialogIndividInfo extends DialogFragment {
         return builder.create();
     }
 
-    String getSignDescription(String birthday)
-    {
-      String d = "";
-        return d;
-    }
 
-    private  String  getFormattedDate(long dobInMilis){
 
-        SimpleDateFormat formatter = new  SimpleDateFormat("dd/MMM/yyyy",
+    private String getFormattedDate(long dobInMilis){
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MMM/yyyy",
                 Locale.getDefault());
 
-        Date dobDate =   new Date(dobInMilis);
+        Date dobDate = new Date(dobInMilis);
 
         String s = formatter.format(dobDate);
 
         return s;
     }
+
 
 
 

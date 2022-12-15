@@ -18,5 +18,18 @@
         android:id="@+id/layoutPersonFragment"
         android:name="com.hfad.horoscopeapp.DisplayHoroscopeSign"
         android:label="fragment_layout_person"
-        tools:layout="@layout/fragment_layout_person" />
+        tools:layout="@layout/fragment_layout_person" >
+        <action
+            android:id="@+id/action_layoutPersonFragment_to_birthdayNextFragment"
+            app:destination="@id/birthdayNextFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/birthdayNextFragment"
+        android:name="com.hfad.horoscopeapp.BirthdayNextFragment"
+        android:label="fragment_birthday_next"
+        tools:layout="@layout/fragment_birthday_next" >
+        <action
+            android:id="@+id/action_birthdayNextFragment_to_layoutPersonFragment"
+            app:destination="@id/layoutPersonFragment" />
+    </fragment>
 </navigation>

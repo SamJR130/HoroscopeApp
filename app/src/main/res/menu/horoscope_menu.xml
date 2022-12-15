@@ -4,15 +4,16 @@
 
         <item android:id="@+id/item_icon"
             android:icon="@drawable/ic_icon"
-            android:title="Item 1"
+            android:title="@string/item_1"
+            android:tag = "https://www.allure.com/story/zodiac-sign-personality-traits-dates"
             app:showAsAction = "ifRoom" />
 
         <item android:id="@+id/home"
-            android:title="Home"
+            android:title="@string/home"
             app:showAsAction = "never"/>
 
         <item android:id="@+id/other"
-            android:title="Other"
+            android:title="@string/birthday"
             app:showAsAction = "never"/>
 
 

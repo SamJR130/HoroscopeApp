@@ -3,10 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Student/AndroidStudioProjects/HoroscopeApp/app/src/main/res/drawable/ic_baseline_wb_sunny_24.xml" value="0.117" />
         <entry key="..\:/Users/Student/AndroidStudioProjects/HoroscopeApp/app/src/main/res/drawable/ic_icon.xml" value="0.172" />
         <entry key="..\:/Users/Student/AndroidStudioProjects/HoroscopeApp/app/src/main/res/layout/activity_main.xml" value="0.234375" />
         <entry key="..\:/Users/Student/AndroidStudioProjects/HoroscopeApp/app/src/main/res/layout/dialog_display_row.xml" value="0.22" />
         <entry key="..\:/Users/Student/AndroidStudioProjects/HoroscopeApp/app/src/main/res/layout/dialog_new_person.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/Student/AndroidStudioProjects/HoroscopeApp/app/src/main/res/layout/fragment_birthday_next.xml" value="0.22" />
         <entry key="..\:/Users/Student/AndroidStudioProjects/HoroscopeApp/app/src/main/res/layout/fragment_first.xml" value="0.13858695652173914" />
         <entry key="..\:/Users/Student/AndroidStudioProjects/HoroscopeApp/app/src/main/res/layout/fragment_layout_person.xml" value="0.22" />
         <entry key="..\:/Users/Student/AndroidStudioProjects/HoroscopeApp/app/src/main/res/layout/layout_person_row.xml" value="0.25" />

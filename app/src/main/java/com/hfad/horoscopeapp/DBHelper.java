@@ -5,9 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class DBHelper  extends SQLiteOpenHelper {
+
 
     private static final String DB_NAME = "users.db";
     private static final int DB_VERSION = 1;
@@ -20,7 +24,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        System.out.println(DBContract.UserEntry.CREATE_USER_TABLE_CMD);
+        System.out.println("Here" + DBContract.UserEntry.CREATE_USER_TABLE_CMD);
 
         db.execSQL(DBContract.UserEntry.CREATE_USER_TABLE_CMD);
     }
@@ -34,12 +38,23 @@ public class DBHelper  extends SQLiteOpenHelper {
 
     public void saveUser(String name, long dobMS)
     {
-        String insert = String.format("INSERT INTO %s ( %s, %s) " + "VALUES('%s', %d);",
+        String b = getFormattedDate(dobMS);
+        int image = 0;
+        String[] date = b.split("/");
+        int d = Integer.parseInt(date[0]);
+        String m = date[1];
+
+        String monthDay = m + "/" + d;
+
+
+        String insert = String.format("INSERT INTO %s ( %s, %s, %s) " + "VALUES('%s', %d, '%s');",
                         DBContract.UserEntry.TABLE_NAME ,
                         DBContract.UserEntry.COLUMN_NAME,
                         DBContract.UserEntry.COLUMN_DOB,
+                        DBContract.UserEntry.COLUMN_FORMAT_BDAY,
                         name,
-                        dobMS
+                        dobMS,
+                        monthDay
                         );
 
         //System.out.println(DBContract.UserEntry.CREATE_USER_TABLE_CMD);
@@ -52,12 +67,12 @@ public class DBHelper  extends SQLiteOpenHelper {
 
     }
 
-    public void alterUser(String name, long dobMS)
+    /*
+    public void alterUser(String desc)
     {
-        String alter = String.format("UPDATE %s SET %S" + ";",
+        String alter = String.format("UPDATE %s SET %s = '%s';",
                 DBContract.UserEntry.TABLE_NAME ,
-                DBContract.UserEntry.COLUMN_NAME,
-                DBContract.UserEntry.COLUMN_DOB,
+                DBContract.UserEntry.COLUMN_H_SIGN,
                 name,
                 dobMS
         );
@@ -71,6 +86,64 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.close();
 
     }
+*/
+
+    public String getBday(String name)
+    {
+        String bday = "";
+
+        String findBday = "SELECT "+ DBContract.UserEntry.COLUMN_FORMAT_BDAY +" FROM " + DBContract.UserEntry.TABLE_NAME
+                + " WHERE " + DBContract.UserEntry.COLUMN_NAME + " = '" + name + "';";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(findBday,null);
+
+        //get the positions of your columns
+        int formPos = cursor.getColumnIndex(DBContract.UserEntry.COLUMN_FORMAT_BDAY);
+
+        while(cursor.moveToNext())
+        {
+            //Gets info from current record
+            String form = cursor.getString(formPos);
+            bday = form;
+
+            //  selectedUser.setBirthday(form);
+        }
+
+        cursor.close();
+        db.close();
+        return bday;
+    }
+    /*
+    public UserInfo getUser(String name)
+    {
+        UserInfo selectedUser;
+
+        String findClosestBday = "SELECT * FROM " + DBContract.UserEntry.TABLE_NAME
+                + " WHERE " + DBContract.UserEntry.COLUMN_NAME + " = '" + name + "';";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(findClosestBday);
+        db.close();
+        Cursor cursor = db.rawQuery(findClosestBday,null);
+
+        //get the positions of your columns
+        int formPos = cursor.getColumnIndex(DBContract.UserEntry.COLUMN_FORMAT_BDAY);
+
+        while(cursor.moveToNext())
+        {
+            //Gets info from current record
+            String form = cursor.getString(formPos);
+
+            //  selectedUser.setBirthday(form);
+        }
+
+        cursor.close();
+        db.close();
+        return form;
+
+    }*/
 
     public ArrayList<UserInfo> fetchAllUsers()
     {
@@ -86,6 +159,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         int idPos = cursor.getColumnIndex(DBContract.UserEntry.COLUMN_ID);
         int namePos = cursor.getColumnIndex(DBContract.UserEntry.COLUMN_NAME);
         int dobPos = cursor.getColumnIndex(DBContract.UserEntry.COLUMN_DOB);
+        int formPos = cursor.getColumnIndex(DBContract.UserEntry.COLUMN_FORMAT_BDAY);
 
         while(cursor.moveToNext())
         {
@@ -145,6 +219,15 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.execSQL(updateString);
         db.close();
 
+    }
+
+    private String getFormattedDate(long dobInMilis){
+
+        SimpleDateFormat formatter = new  SimpleDateFormat("dd/MMM/yyyy", Locale.getDefault());
+        Date dobDate =   new Date(dobInMilis);
+
+        String s = formatter.format(dobDate);
+        return s;
     }
 
 

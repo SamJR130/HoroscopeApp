@@ -2,4 +2,16 @@
     <string name="app_name">Horoscope App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="choose_a_name">Choose a Name</string>
+    <string name="check_other_birthdays">Check Other Birthdays:</string>
+    <string name="closest_birthday">Closest Birthday:</string>
+    <string name="whose_birthday_is_next">Whose Birthday is Next?</string>
+    <string name="birthday">Birthday</string>
+    <string name="home">Home</string>
+    <string name="item_1">Item 1</string>
+    <string name="name">Name</string>
+    <string name="bday">Bday</string>
+    <string name="days_until">Days Until</string>
+    <string name="bday_">Bday</string>
+    <string name="days_until_s">Days Until</string>
 </resources>
