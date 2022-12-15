@@ -18,12 +18,5 @@
         android:id="@+id/layoutPersonFragment"
         android:name="com.hfad.horoscopeapp.DisplayHoroscopeSign"
         android:label="fragment_layout_person"
-        tools:layout="@layout/fragment_layout_person" >
-        <argument
-            android:name="firstName"
-            app:argType="string" />
-        <argument
-            android:name="firstBirthday"
-            app:argType="string" />
-    </fragment>
+        tools:layout="@layout/fragment_layout_person" />
 </navigation>

@@ -1,24 +1,31 @@
 package com.hfad.horoscopeapp;
 
-public class PersonInfo {
-    private String birthday;
-
-
-
+public class UserInfo {
+    private long birthday;
     private String name;
-    private boolean isAppOwner;
+    private long id;
 
-    public PersonInfo(String birthday, String name, boolean isAppOwner) {
+
+    public UserInfo(long birthday, String name, long id) {
         this.birthday = birthday;
         this.name = name;
-        this.isAppOwner = isAppOwner;
+        this.id = id;
+
     }
 
-    public String getBirthday() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(long birthday) {
         this.birthday = birthday;
     }
 
@@ -30,13 +37,6 @@ public class PersonInfo {
         this.name = name;
     }
 
-    public boolean isAppOwner() {
-        return isAppOwner;
-    }
-
-    public void setAppOwner(boolean appOwner) {
-        isAppOwner = appOwner;
-    }
 
 
     @Override
@@ -44,7 +44,7 @@ public class PersonInfo {
         return "Person{" +
                 "birthday='" + birthday + '\'' +
                 ", name='" + name + '\'' +
-                ", isAppOwner=" + isAppOwner +
                 '}';
     }
+
 }

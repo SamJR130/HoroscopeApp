@@ -12,14 +12,21 @@ import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 
 public class DisplayHoroscopeSign extends Fragment {
+
+    private UserInfo user;
+    private DBHelper dbHelper;
+    private HoroscopeAdapter adapter;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_layout_person, container, false);
-
 
         setUpRecyclerView(view);
 
@@ -29,7 +36,9 @@ public class DisplayHoroscopeSign extends Fragment {
             @Override
             public void onClick(View view) {
 
-                DialogNewPersonToHoroList dialog = new DialogNewPersonToHoroList();
+                //DialogDisplayInfo dialog = new DialogDisplayInfo(user);
+               // dialog.show(getParentFragmentManager(), "");
+                DialogNewPersonToHoroList dialog = new DialogNewPersonToHoroList(adapter);
                 dialog.show(getParentFragmentManager(), "");
             }
         });
@@ -41,12 +50,15 @@ public class DisplayHoroscopeSign extends Fragment {
 
     private void setUpRecyclerView(View view)
     {
+        dbHelper = new DBHelper(getContext());
+
+        ArrayList<UserInfo> userInfos = dbHelper.fetchAllUsers();
+
         RecyclerView rv =  view.findViewById(R.id.recyclerView);
-       //Adapter adapter = new Adapter(getSupportFragmentManager(), Database.getNotes());
-        HoroscopeAdapter adapter = new HoroscopeAdapter(this.getContext(), Database.getAllPeople());
+        adapter = new HoroscopeAdapter(getParentFragmentManager(), userInfos);
         rv.setAdapter(adapter);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         rv.setLayoutManager(layoutManager);
 
