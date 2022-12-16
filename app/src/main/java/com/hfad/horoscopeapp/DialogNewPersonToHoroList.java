@@ -23,6 +23,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+
+//Sam and Angel
+//This class adds a new user to the dtabase via a dialog that requires input
 public class DialogNewPersonToHoroList extends DialogFragment {
     private Calendar myCalendar = Calendar.getInstance();
     private UserInfo personNow;
@@ -33,15 +36,13 @@ public class DialogNewPersonToHoroList extends DialogFragment {
     private Button btnOk;
     private DBHelper dbHelper;
 
-    public DialogNewPersonToHoroList(HoroscopeAdapter a)
-    {
+    public DialogNewPersonToHoroList(HoroscopeAdapter a) {
         horoAdapter = a;
     }
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -53,7 +54,8 @@ public class DialogNewPersonToHoroList extends DialogFragment {
         btnCancel = dialogView.findViewById(R.id.btnCancel);
         btnOk = dialogView.findViewById(R.id.btnOk);
 
-        DatePickerDialog.OnDateSetListener  date =  new DatePickerDialog.OnDateSetListener() {
+        //Set calender date
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year,
@@ -67,6 +69,8 @@ public class DialogNewPersonToHoroList extends DialogFragment {
 
         };
 
+
+        //Calander pops up when clicked
         Activity activity = getActivity();
         tvNewBirthday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +86,7 @@ public class DialogNewPersonToHoroList extends DialogFragment {
             }
         });
 
+        //Exit dialog
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +94,7 @@ public class DialogNewPersonToHoroList extends DialogFragment {
             }
         });
 
+        //Save the new user to database
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,38 +111,38 @@ public class DialogNewPersonToHoroList extends DialogFragment {
         return builder.create();
     }
 
-    private void saveUser()
-    {
+    //Saved User using adapter and dbhelper
+    private void saveUser() {
         String toastString = null;
         String name = tvNewPerson.getText().toString();
         long callInMS = myCalendar.getTimeInMillis();
 
-        if(name.equals(""))
-        {
+        //Checks name is not empty before adding to databse
+        if (name.equals("")) {
             toastString = "Fill out all fields";
             Toast.makeText(getContext(), toastString, Toast.LENGTH_SHORT);
-        }
-        else
-        {
-            dbHelper.saveUser(name,callInMS);
+        } else {
+            dbHelper.saveUser(name, callInMS);
             ArrayList<UserInfo> users = dbHelper.fetchAllUsers();
 
+            //Sets the users
             horoAdapter.setUsers(users);
             horoAdapter.notifyDataSetChanged();
-            horoAdapter.notifyItemRangeChanged(0,users.size());
+            horoAdapter.notifyItemRangeChanged(0, users.size());
 
             toastString = "User added";
         }
-        Toast t = Toast.makeText(getContext(),toastString,Toast.LENGTH_LONG);
-       t.show();
+        Toast t = Toast.makeText(getContext(), toastString, Toast.LENGTH_LONG);
+        t.show();
     }
 
-    private  String  getFormattedDate(long dobInMilis){
+    //Formats the dates
+    private String getFormattedDate(long dobInMilis) {
 
-        SimpleDateFormat formatter = new  SimpleDateFormat("dd/MMM/yyyy",
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MMM/yyyy",
                 Locale.getDefault());
 
-        Date dobDate =   new Date(dobInMilis);
+        Date dobDate = new Date(dobInMilis);
 
         String s = formatter.format(dobDate);
 

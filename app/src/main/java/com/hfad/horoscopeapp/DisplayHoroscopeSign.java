@@ -14,7 +14,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-
+//Angel And Sam
+//This is another fragment that holds a cardview to display the users info
 public class DisplayHoroscopeSign extends Fragment {
 
     private UserInfo user;
@@ -32,29 +33,29 @@ public class DisplayHoroscopeSign extends Fragment {
 
         FloatingActionButton btnAdd = view.findViewById(R.id.fab);
 
+        //The add new user dialog
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 //DialogDisplayInfo dialog = new DialogDisplayInfo(user);
-               // dialog.show(getParentFragmentManager(), "");
+                // dialog.show(getParentFragmentManager(), "");
                 DialogNewPersonToHoroList dialog = new DialogNewPersonToHoroList(adapter);
                 dialog.show(getParentFragmentManager(), "");
             }
         });
 
 
-
         return view;
     }
 
-    private void setUpRecyclerView(View view)
-    {
+    //Recycler view
+    private void setUpRecyclerView(View view) {
         dbHelper = new DBHelper(getContext());
 
         ArrayList<UserInfo> userInfos = dbHelper.fetchAllUsers();
 
-        RecyclerView rv =  view.findViewById(R.id.recyclerView);
+        RecyclerView rv = view.findViewById(R.id.recyclerView);
         adapter = new HoroscopeAdapter(getParentFragmentManager(), userInfos);
         rv.setAdapter(adapter);
 

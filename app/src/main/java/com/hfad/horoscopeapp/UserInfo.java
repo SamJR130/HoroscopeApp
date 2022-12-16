@@ -1,11 +1,13 @@
 package com.hfad.horoscopeapp;
 
+//This class creates a user and their information
+//Sam and Angel
 public class UserInfo {
     private long birthday;
     private String name;
     private long id;
 
-
+    //Constructor
     public UserInfo(long birthday, String name, long id) {
         this.birthday = birthday;
         this.name = name;
@@ -13,6 +15,7 @@ public class UserInfo {
 
     }
 
+    //Setters and getters
     public long getId() {
         return id;
     }
@@ -36,7 +39,6 @@ public class UserInfo {
     public void setName(String name) {
         this.name = name;
     }
-
 
 
     @Override

@@ -17,6 +17,8 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+//Sam and ANgel
+//Our first fragment which is the log in page
 public class FirstFragment extends Fragment {
 
     private Calendar myCalendar = Calendar.getInstance();
@@ -28,10 +30,10 @@ public class FirstFragment extends Fragment {
     private String monthPerson;
     private int datePerson;
 
+    //This will help byepass if their is already a host user
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        System.out.println("Here " + dbHelper.fetchAllUsers().size());
+        //If database does not have host user
         if (dbHelper.fetchAllUsers().size() > 0)
             Navigation.findNavController(view).navigate(R.id.action_firstFragment_to_layoutPersonFragment);
     }
@@ -40,19 +42,14 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-       // AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = inflater.inflate(R.layout.fragment_first, null);
 
         start = view.findViewById(R.id.btnStart);
         tvFName = view.findViewById(R.id.tvFirstName);
         tvFBirthday = view.findViewById(R.id.tvFirstBirthday);
 
-        //Sets the text to the formatted date
-        //tvFBirthday.setText(getFormattedDate(user.getBirthday()));
-
-
-        DatePickerDialog.OnDateSetListener  date =  new DatePickerDialog.OnDateSetListener() {
+        //Calender and date set ups
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year,
@@ -71,20 +68,20 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                //myCalendar.setTimeInMillis(employeeToShow.getDob());
                 DatePickerDialog dialog = new DatePickerDialog(activity,
                         date,
                         myCalendar.get(Calendar.YEAR),
                         myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH));
 
-                monthPerson =  String.valueOf(myCalendar.get(Calendar.MONTH));
+                monthPerson = String.valueOf(myCalendar.get(Calendar.MONTH));
                 datePerson = myCalendar.get(Calendar.DAY_OF_MONTH);
 
                 dialog.show();
             }
         });
 
+        //Calender and date set ups
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,14 +89,14 @@ public class FirstFragment extends Fragment {
                 String name = tvFName.getText().toString();
 
                 String birthday = tvFBirthday.getText().toString();
-                if(name.equals(""))
-                {
+
+                //Fields must be filled out or will not go to next screen
+                if (name.equals("")) {
                     String toastString = "Fill out all fields";
                     Toast toast = new Toast(getContext());
                     toast.makeText(getContext(), toastString, Toast.LENGTH_SHORT).show();
                     System.out.println("IT made it");
-                }
-                else {
+                } else {
                     saveUserInfo();
                     Navigation.findNavController(view).navigate(R.id.action_firstFragment_to_layoutPersonFragment);
                 }
@@ -113,32 +110,22 @@ public class FirstFragment extends Fragment {
         return view;
     }
 
-
-    private void saveUserInfo()
-    {
-        String toastString = null;
+    //Save user into database
+    private void saveUserInfo() {
         String name = tvFName.getText().toString();
         long callInMS = myCalendar.getTimeInMillis();
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String dateString = formatter.format(new Date(callInMS));
-
-            dbHelper.saveUser(name, callInMS);
-            ArrayList<UserInfo> users = new ArrayList<UserInfo>();
-                    users = dbHelper.fetchAllUsers();
-
-            toastString = "User added";
-
-
-//        Toast t = Toast.makeText(getContext(),toastString,Toast.LENGTH_LONG);
-//        t.show();
+        dbHelper.saveUser(name, callInMS);
     }
 
 
-    private String getFormattedDate(long dobInMilis){
+    //Format the date
+    private String getFormattedDate(long dobInMilis) {
 
-        SimpleDateFormat formatter = new  SimpleDateFormat("dd/MMM/yyyy", Locale.getDefault());
-        Date dobDate =   new Date(dobInMilis);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MMM/yyyy", Locale.getDefault());
+        Date dobDate = new Date(dobInMilis);
 
         String s = formatter.format(dobDate);
         return s;

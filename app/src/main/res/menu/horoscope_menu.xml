@@ -5,7 +5,7 @@
         <item android:id="@+id/item_icon"
             android:icon="@drawable/ic_icon"
             android:title="@string/item_1"
-            android:tag = "https://www.allure.com/story/zodiac-sign-personality-traits-dates"
+            android:text = "https://www.allure.com/story/zodiac-sign-personality-traits-dates"
             app:showAsAction = "ifRoom" />
 
         <item android:id="@+id/home"

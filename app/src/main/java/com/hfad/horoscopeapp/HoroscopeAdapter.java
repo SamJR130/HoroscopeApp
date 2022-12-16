@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+//this class helps retrieve and manage data across fragments
+//Angel and Sam
 public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyViewHolder> {
 
     //private Context context;
@@ -25,9 +27,11 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
     private ImageView imvUserSign;
     private View itemView;
     public String description;
+    public String link;
 
     private FragmentManager fragmentManager;
 
+    //Set fragment and users
     public HoroscopeAdapter(FragmentManager fm, ArrayList<UserInfo> n) {
         fragmentManager = fm;
         allPeople = n;
@@ -48,23 +52,23 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
+        //Get postion of user
         UserInfo p = allPeople.get(position);
         holder.setData(p, position);
 
         //System.out.println("DONE CREATING POPULATING A ROW: " + position + " " + p.getTitleNote());
     }
 
+    //Number of users
     @Override
     public int getItemCount() {
 
         return allPeople.size();
     }
 
+    //Set the users
     public void setUsers(ArrayList<UserInfo> users) {
         allPeople = users;
-        System.out.println("Error");
-
-
         notifyItemRangeChanged(0, allPeople.size());
     }
 
@@ -82,27 +86,18 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
             imvDelete = itemView.findViewById(R.id.imvDelete);
 
 
+            //Delete added users
             imvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    if (currentPerson == null)
-                    {
-                        System.out.println("CURRENT PERSON NULL");
-                    }
-                    else
-                    {
-                        System.out.println("CURRENT PERSON NOT NULL" + currentPerson);
-                    }
-                    System.out.println("SIZE:" + allPeople.size());
+                    //Create dbhelper
                     DBHelper dbHelper = new DBHelper(view.getContext());
                     dbHelper.deleteUser(currentPerson);
 
                     ArrayList<UserInfo> tempList = dbHelper.fetchAllUsers();
-                    System.out.println("UPDATED SIZE:" + tempList.size());
 
-                    System.out.println("HERE " + currentPerson);
-                    if(allPeople.size() > 1) {
+                    //If not the main user remove user
+                    if (currentPerson.getId() != 1) {
                         allPeople.remove(currentPositionInList);
                         notifyItemRemoved(currentPositionInList);
                         notifyItemRangeChanged(currentPositionInList, allPeople.size());
@@ -112,6 +107,7 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
         }
 
 
+        //Set the data for the user in textviews
         public void setData(UserInfo p, int pos) {
 
             int sign;
@@ -121,44 +117,36 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
             TextView name = itemView.findViewById(R.id.tvName);
             name.setText(p.getName());
             TextView dob = itemView.findViewById(R.id.tvBirthday);
-            dob.setText(getFormattedDate(p.getBirthday()) + "" );
+            dob.setText(getFormattedDate(p.getBirthday()) + "");
             imvSign = itemView.findViewById(R.id.iv_sign_row);
-
-            String formatDate = getFormattedDate(p.getBirthday());
-            //imvSign.setImageResource(getImage(formatDate, imvSign);
-
-            //sign = getImage(getFormattedDate(p.getBirthday()));
             System.out.println("I WORK UP TO HERE");
             long bday = p.getBirthday();
             String formBday = getFormattedDate(bday);
             sign = getImage(formBday);
-           imvSign.setImageResource(sign);
+            imvSign.setImageResource(sign);
 
 
-
-           //imvUserSign.setImageResource(sign);
         }
 
 
         @Override
         public void onClick(View view) {
-            DialogIndividInfo dialog = new DialogIndividInfo(currentPerson,HoroscopeAdapter.this);
-            //FragmentActivity fa = (FragmentActivity) view.getContext();
-            //FragmentManager fm = context.getSupportFragmentManager();
-            //FragmentManager fm = ((FragmentActivity) context).getSupportFragmentManager();
+            DialogIndividInfo dialog = new DialogIndividInfo(currentPerson, HoroscopeAdapter.this);
             dialog.show(fragmentManager, "");
         }
     }
-    private String getFormattedDate(long dobInMilis){
 
-        SimpleDateFormat formatter = new  SimpleDateFormat("dd/MMM/yyyy", Locale.getDefault());
-        Date dobDate =   new Date(dobInMilis);
+    //Format the miliseconds to date
+    private String getFormattedDate(long dobInMilis) {
 
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MMM/yyyy", Locale.getDefault());
+        Date dobDate = new Date(dobInMilis);
         String s = formatter.format(dobDate);
         return s;
     }
-    public int getImage(String b)
-    {
+
+    //Get the image Description and link for the user
+    public int getImage(String b) {
         int image = 0;
         String[] date = b.split("/");
         int d = Integer.parseInt(date[0]);
@@ -166,10 +154,8 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
 
         //ImageView image = itemView.findViewById(R.id.iv_sign);
 
-        if (m.equals("Jan"))
-        {
-            if (d >= 1 && d < 20)
-            {
+        if (m.equals("Jan")) {
+            if (d >= 1 && d < 20) {
                 //capricorn
                 image = R.drawable.capricorn;
                 description = "What is the most valuable resource? For Capricorn, " +
@@ -180,9 +166,10 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         ", a mythological creature with the body of a goat and the ta" +
                         "il of a fish. Accordingly, Capricorns are skilled at navigati" +
                         "ng both the material and emotional realms.";
-            }
-            else
-            {
+                link = "https://www.mindbodygreen.com/articles/capricorn#:~:" +
+                        "text=Capricorn%20is%20the%2010th%20sign,energy%20is%20honest%20and%20wise.";
+
+            } else {
                 //aquarius
                 image = R.drawable.aquarius;
                 description = "Despite the \"aqua\" in its name, Aquarius is actually " +
@@ -192,12 +179,10 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "n the land. Accordingly, Aquarius is the most humanitarian astr" +
                         "ological sign. At the end of the day, Aquarius is dedicated to" +
                         " making the world a better place.";
+                link = "https://www.allure.com/story/aquarius-zodiac-sign-personality-traits";
             }
-        }
-        else if (m.equals("Feb"))
-        {
-            if (d >= 1 && d < 19)
-            {
+        } else if (m.equals("Feb")) {
+            if (d >= 1 && d < 19) {
                 //aquarius
                 image = R.drawable.aquarius;
                 description = "Despite the \"aqua\" in its name, Aquarius is actually " +
@@ -207,9 +192,8 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "n the land. Accordingly, Aquarius is the most humanitarian astr" +
                         "ological sign. At the end of the day, Aquarius is dedicated to" +
                         " making the world a better place.";
-            }
-            else
-            {
+                link = "https://www.allure.com/story/aquarius-zodiac-sign-personality-traits";
+            } else {
                 //pisces
                 image = R.drawable.pisces;
                 description = "If you looked up the word \"psychic\" in the dictionary, " +
@@ -221,12 +205,11 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         " of the other signs. It's symbolized by two fish swimming in " +
                         "opposite directions, representing the constant division of Pi" +
                         "sces' attention between fantasy and reality.";
+
+                link = "https://www.costarastrology.com/zodiac-signs/pisces-sign";
             }
-        }
-        else if (m.equals("Mar"))
-        {
-            if (d >= 1 && d < 21)
-            {
+        } else if (m.equals("Mar")) {
+            if (d >= 1 && d < 21) {
                 //pisces
                 image = R.drawable.pisces;
                 description = "If you looked up the word \"psychic\" in the dictionary, " +
@@ -238,9 +221,9 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         " of the other signs. It's symbolized by two fish swimming in " +
                         "opposite directions, representing the constant division of Pi" +
                         "sces' attention between fantasy and reality.";
-            }
-            else
-            {
+
+                link = "https://www.costarastrology.com/zodiac-signs/pisces-sign";
+            } else {
                 //aries
                 image = R.drawable.aries;
                 description = "The first sign of the zodiac, Aries loves to be number one." +
@@ -248,12 +231,10 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         " Bold and ambitious, Aries dives headfirst into even the most cha" +
                         "llenging situations—and they'll make sure they always come out on" +
                         " top!";
+                link = "https://www.allure.com/story/aries-zodiac-sign-personality-traits";
             }
-        }
-        else if (m.equals("Apr"))
-        {
-            if (d >= 1 && d < 20)
-            {
+        } else if (m.equals("Apr")) {
+            if (d >= 1 && d < 20) {
                 //aries
                 image = R.drawable.aries;
                 description = "The first sign of the zodiac, Aries loves to be number one." +
@@ -261,9 +242,8 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         " Bold and ambitious, Aries dives headfirst into even the most cha" +
                         "llenging situations—and they'll make sure they always come out on" +
                         " top!";
-            }
-            else
-            {
+                link = "https://www.allure.com/story/aries-zodiac-sign-personality-traits";
+            } else {
                 //taurus
                 image = R.drawable.taurus;
                 description = "What sign is more likely to take a six-hour bath, followed" +
@@ -272,12 +252,10 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "ll. Like their celestial spirit animal, Taureans enjoy relaxing i" +
                         "n serene, bucolic environments surrounded by soft sounds, soothi" +
                         "ng aromas, and succulent flavors.";
+                link = "https://www.costarastrology.com/zodiac-signs/taurus-sign";
             }
-        }
-        else if (m.equals("May"))
-        {
-            if (d >= 1 && d < 21)
-            {
+        } else if (m.equals("May")) {
+            if (d >= 1 && d < 21) {
                 //taurus
                 image = R.drawable.taurus;
                 description = "What sign is more likely to take a six-hour bath, followed" +
@@ -286,9 +264,8 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "ll. Like their celestial spirit animal, Taureans enjoy relaxing i" +
                         "n serene, bucolic environments surrounded by soft sounds, soothi" +
                         "ng aromas, and succulent flavors.";
-            }
-            else
-            {
+                link = "https://www.costarastrology.com/zodiac-signs/taurus-sign";
+            } else {
                 //gemini
                 image = R.drawable.gemini;
                 description = "Have you ever been so busy that you wished you could clone" +
@@ -297,12 +274,10 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "Gemini is driven by its insatiable curiosity. Appropriately sym" +
                         "bolized by the celestial twins, this air sign was interested in" +
                         " so many pursuits that it had to double itself. You know, NBD!";
+                link = "https://www.zodiacsign.com/zodiac-signs/gemini/";
             }
-        }
-        else if (m.equals("Jun"))
-        {
-            if (d >= 1 && d < 21)
-            {
+        } else if (m.equals("Jun")) {
+            if (d >= 1 && d < 21) {
                 //gemini
                 image = R.drawable.gemini;
                 description = "Have you ever been so busy that you wished you could clone" +
@@ -311,9 +286,8 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "Gemini is driven by its insatiable curiosity. Appropriately sym" +
                         "bolized by the celestial twins, this air sign was interested in" +
                         " so many pursuits that it had to double itself. You know, NBD!";
-            }
-            else
-            {
+                link = "https://www.zodiacsign.com/zodiac-signs/gemini/";
+            } else {
                 //cancer
                 image = R.drawable.cancer;
                 description = "Represented by the crab, Cancer seamlessly weaves between" +
@@ -323,12 +297,11 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         " like the hard-shelled crustaceans—this water sign is willing to" +
                         " do whatever it takes to protect itself emotionally. In order to" +
                         " get to know this sign, you're going to need to establish trust!";
+                link = "https://www.mindbodygreen.com/articles/cancer-sign-101#:~" +
+                        ":text=Cancer%20is%20the%20fourth%20sign,emotional%2C%20homey%2C%20and%20comforting.";
             }
-        }
-        else if (m.equals("Jul"))
-        {
-            if (d >= 1 && d < 23)
-            {
+        } else if (m.equals("Jul")) {
+            if (d >= 1 && d < 23) {
                 //cancer
                 image = R.drawable.cancer;
                 description = "Represented by the crab, Cancer seamlessly weaves between" +
@@ -338,9 +311,9 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         " like the hard-shelled crustaceans—this water sign is willing to" +
                         " do whatever it takes to protect itself emotionally. In order to" +
                         " get to know this sign, you're going to need to establish trust!";
-            }
-            else
-            {
+                link = "https://www.mindbodygreen.com/articles/cancer-sign-101#:~" +
+                        ":text=Cancer%20is%20the%20fourth%20sign,emotional%2C%20homey%2C%20and%20comforting.";
+            } else {
                 //leo
                 image = R.drawable.leo;
                 description = "Roll out the red carpet because Leo has arrived. Passiona" +
@@ -349,12 +322,10 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "e celestial jungle. They're delighted to embrace their royal sta" +
                         "tus: Vivacious, theatrical, and fiery, Leos love to bask in the " +
                         "spotlight and celebrate… well, themselves";
+                link = "https://www.britannica.com/place/Leo-constellation";
             }
-        }
-        else if (m.equals("Aug"))
-        {
-            if (d >= 1 && d < 23)
-            {
+        } else if (m.equals("Aug")) {
+            if (d >= 1 && d < 23) {
                 //leo
                 image = R.drawable.leo;
                 description = "Roll out the red carpet because Leo has arrived. Passiona" +
@@ -363,9 +334,8 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "e celestial jungle. They're delighted to embrace their royal sta" +
                         "tus: Vivacious, theatrical, and fiery, Leos love to bask in the " +
                         "spotlight and celebrate… well, themselves";
-            }
-            else
-            {
+                link = "https://www.britannica.com/place/Leo-constellation";
+            } else {
                 //virgo
                 image = R.drawable.virgo;
                 description = "You know the expression, \"if you want something done, " +
@@ -376,12 +346,10 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         " that speaks to Virgo's deep-rooted presence in the material wo" +
                         "rld. This earth sign is a perfectionist at heart and isn’t afraid " +
                         "to improve skills through diligent and consistent practice.";
+                link = "https://www.allure.com/story/virgo-zodiac-sign-personality-traits";
             }
-        }
-        else if (m.equals("Sep"))
-        {
-            if (d >= 1 && d < 23)
-            {
+        } else if (m.equals("Sep")) {
+            if (d >= 1 && d < 23) {
                 //virgo
                 image = R.drawable.virgo;
                 description = "You know the expression, \"if you want something done, " +
@@ -392,9 +360,8 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         " that speaks to Virgo's deep-rooted presence in the material wo" +
                         "rld. This earth sign is a perfectionist at heart and isn’t afraid " +
                         "to improve skills through diligent and consistent practice.";
-            }
-            else
-            {
+                link = "https://www.allure.com/story/virgo-zodiac-sign-personality-traits";
+            } else {
                 //libra
                 image = R.drawable.libra;
                 description = "Balance, harmony, and justice define Libra energy. As a " +
@@ -404,12 +371,10 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "bra is obsessed with symmetry and strives to create equilibrium" +
                         " in all areas of life — especially when it comes to matters of " +
                         "the heart.";
+                link = "https://www.horoscope.com/zodiac-signs/libra";
             }
-        }
-        else if (m.equals("Oct"))
-        {
-            if (d >= 1 && d < 23)
-            {
+        } else if (m.equals("Oct")) {
+            if (d >= 1 && d < 23) {
                 //libra
                 image = R.drawable.libra;
                 description = "Balance, harmony, and justice define Libra energy. As a " +
@@ -419,9 +384,8 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "bra is obsessed with symmetry and strives to create equilibrium" +
                         " in all areas of life — especially when it comes to matters of " +
                         "the heart.";
-            }
-            else
-            {
+                link = "https://www.horoscope.com/zodiac-signs/libra";
+            } else {
                 //scorpio
                 image = R.drawable.scorpio;
                 description = "Elusive and mysterious, Scorpio is one of the most" +
@@ -431,12 +395,11 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "orpio derives its extraordinary courage from its psychic abi" +
                         "lities, which is what makes this sign one of the most complic" +
                         "ated, dynamic signs of the zodiac.";
+
+                link = "https://www.instyle.com/lifestyle/scorpio-zodiac-sign";
             }
-        }
-        else if (m.equals("Nov"))
-        {
-            if (d >= 1 && d < 22)
-            {
+        } else if (m.equals("Nov")) {
+            if (d >= 1 && d < 22) {
                 //scorpio
                 image = R.drawable.scorpio;
                 description = "Elusive and mysterious, Scorpio is one of the most" +
@@ -446,23 +409,8 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "orpio derives its extraordinary courage from its psychic abi" +
                         "lities, which is what makes this sign one of the most complic" +
                         "ated, dynamic signs of the zodiac.";
-            }
-            else
-            {
-                //sagittarius
-                image = R.drawable.sagittarius;
-                description = "Oh, the places Sagittarius goes! But… actually. This " +
-                        "fire sign knows no bounds. Represented by the archer, Sagit" +
-                        "tarians are always on a quest for knowledge. The last fire " +
-                        "sign of the zodiac, Sagittarius launches its many pursuits " +
-                        "like blazing arrows, chasing after geographical, intellectua" +
-                        "l, and spiritual adventures.";
-            }
-        }
-        else if (m.equals("Dec"))
-        {
-            if (d >= 1 && d < 20)
-            {
+                link = "https://www.instyle.com/lifestyle/scorpio-zodiac-sign";
+            } else {
                 //sagittarius
                 image = R.drawable.sagittarius;
                 description = "Oh, the places Sagittarius goes! But… actually. This " +
@@ -472,9 +420,21 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         "like blazing arrows, chasing after geographical, intellectua" +
                         "l, and spiritual adventures.";
 
+                link = "https://www.britannica.com/place/Sagittarius-constellation";
             }
-            else
-            {
+        } else if (m.equals("Dec")) {
+            if (d >= 1 && d < 20) {
+                //sagittarius
+                image = R.drawable.sagittarius;
+                description = "Oh, the places Sagittarius goes! But… actually. This " +
+                        "fire sign knows no bounds. Represented by the archer, Sagit" +
+                        "tarians are always on a quest for knowledge. The last fire " +
+                        "sign of the zodiac, Sagittarius launches its many pursuits " +
+                        "like blazing arrows, chasing after geographical, intellectua" +
+                        "l, and spiritual adventures.";
+
+                link = "https://www.britannica.com/place/Sagittarius-constellation";
+            } else {
                 //capricorn
                 image = R.drawable.capricorn;
                 description = "What is the most valuable resource? For Capricorn, " +
@@ -485,11 +445,15 @@ public class HoroscopeAdapter extends RecyclerView.Adapter<HoroscopeAdapter.MyVi
                         ", a mythological creature with the body of a goat and the ta" +
                         "il of a fish. Accordingly, Capricorns are skilled at navigati" +
                         "ng both the material and emotional realms.";
+                link = "https://www.mindbodygreen.com/articles/capricorn#" +
+                        ":~:text=Capricorn%20is%20the%2010th%20sign,energy%20is%20honest%20and%20wise.";
             }
         }
         System.out.println("image " + image);
         return image;
     }
+
+
 }
 
 

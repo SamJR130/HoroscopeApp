@@ -12,10 +12,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
-
-public class BirthdayNextFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+//Angel and Sam
+//This class is suppose to show the users in the database
+//and whose birthday is the closest
+public class BirthdayNextFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     View view;
     TextView tvSelectedBday;
@@ -39,28 +47,25 @@ public class BirthdayNextFragment extends Fragment implements AdapterView.OnItem
         TextView tvSelectedBdayClose = view.findViewById(R.id.tv_when);
 
         tvSelectedBday = view.findViewById(R.id.tv_bday);
-        //tvCloseName.setText(dbHelper.fetchAllUsers().get());
-
-        //spName.getSelectedItem();
 
 
         ArrayList<String> items = new ArrayList<>();
 
 
-        for (int i = 0; i < dbHelper.fetchAllUsers().size(); i++)
-        {
+        for (int i = 0; i < dbHelper.fetchAllUsers().size(); i++) {
             System.out.println("USER NAME" + dbHelper.fetchAllUsers().get(i).getName());
             items.add(dbHelper.fetchAllUsers().get(i).getName());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item,items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, items);
         spName.setAdapter(adapter);
 
         spName.setOnItemSelectedListener(this);
-        //tvSelectedBday.setText(dbHelper.getUser(spName.getSelectedItem().toString()).getBirthday() + "");
-       // spName.onClick(View view);
-        System.out.println("SPNAME" + spName.getSelectedItem().toString());
-        //tvSelectedBday.setText(dbHelper.getBday(spName.getSelectedItem().toString()));
+        Calendar calendar = Calendar.getInstance();
+
+        //todays date
+        tvSelectedBdayClose.setText(getFormattedDate(calendar.getTimeInMillis()));
+
         return view;
     }
 
@@ -75,4 +80,31 @@ public class BirthdayNextFragment extends Fragment implements AdapterView.OnItem
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
+    //Format the date
+    private String getFormattedDate(long dobInMilis) {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MMM/yyyy", Locale.getDefault());
+        Date dobDate = new Date(dobInMilis);
+
+        String s = formatter.format(dobDate);
+        return s;
+    }
+
+    /*
+    public void findClosestBday() {
+        try {
+            DateFormat df = new SimpleDateFormat("hh:mm:ss_yyyy.MM.dd");
+            Date date1 = new java.util.Date();
+            Date date2 = df.parse("00:00:00_2013.01.01");
+            long diff = date2.getTime() - date1.getTime();
+            System.out.println("TEST" + date1.getTime() + " - " + date2.getTime() + " - " + diff / 1000 / 60 / 60 / 24);
+        } catch (
+                ParseException e) {
+            System.out.println("TEST" + "Exception" + e);
+        }
+    }
+    */
+
 }
